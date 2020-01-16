@@ -5,7 +5,6 @@ import pickle
 import time
 
 app = Flask(__name__)
-app.secret_key = '4J]nO01lP2[dzx'
 
 fin = open('output.txt', "rb")
 solutionset = pickle.load(fin)
@@ -13,11 +12,9 @@ fin.close()
 
 gstate = {}
 
-
 @app.route("/")
 def index():
     return render_template("index.html")
-
 
 @app.route('/game/new')
 def newgame():
@@ -28,10 +25,8 @@ def newgame():
     gstate[game['id']]['solutionset'] = copy.deepcopy(solutionset)
     return jsonify(game)
 
-
 multiplayergame = {id: -1}
 multiplayergame['solutionset'] = copy.deepcopy(solutionset)
-
 
 @app.route('/multigame/new')
 def newmultigame():
@@ -41,7 +36,6 @@ def newmultigame():
         'id': -1
     }
     return jsonify(multiplayergame[session['userid']])
-
 
 @app.route('/game/<gameid>/level/new')
 def newlevel(gameid):
@@ -62,7 +56,6 @@ def newlevel(gameid):
     gstate[gameid]['last_level_start_time'] = now
     return jsonify(level)
 
-
 @app.route('/multigame/level/new')
 def multiplayerMultiLevel():
     level = {}
@@ -81,7 +74,6 @@ def multiplayerMultiLevel():
     level['start_time'] = now
     multiplayergame[session['userid']]['last_level_start_time'] = now
     return jsonify(level)
-
 
 @app.route('/game/<gameid>/level/<levelid>/<word>')
 def levelguess(gameid, levelid, word):
@@ -109,7 +101,6 @@ def levelguess(gameid, levelid, word):
     results['score'] = gstate[gameid]['score']
 
     return jsonify(results)
-
 
 @app.route('/multigame/level/<levelid>/<word>')
 def mutligamelevelguess(levelid, word):
